@@ -1,0 +1,1440 @@
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+     Testing Task 1: Parsing Arguments
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+╔══════════╗
+║ Case  1  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  2  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -h
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  3  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -A 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Unknown option '-A'.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  4  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -E -M 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Unknown option '-E'.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  5  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -n -g -Q 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Unknown option '-n'.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  6  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -Q -G -O -y 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Unknown option '-Q'.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  7  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -l -h -h 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l:/tmp/rbintest/
+├── .hidden1.txt
+├── .hideme
+├── .hideme2
+│   └── hide.txt
+├── dir1
+│   └── junk1.txt
+├── dir2
+│   ├── .hidden2.txt
+│   ├── dir3
+│   │   └── junk3.txt
+│   ├── file3.txt
+│   └── junk2.txt
+├── file1.txt
+├── file2.txt
+├── file4.txt
+├── junk0.txt
+├── lastone.txt
+└── yetanother
+
+7 directories, 11 files
+ List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Too many options enabled.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  8  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -h -y -l sHsYa5U  JGE4stfJ2  J0ifKi9  
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Unknown option '-y'.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  9  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -E -u -l -i Tmk6UOAO  RSEJubzCg  IdZi3kw  VijiZt  
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Unknown option '-E'.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 10  ║
+╚══════════╝
+Command:
+--------
+"./rbin.sh" -l -l -h Z0yrySs  lwTRzG0qO  gzspFi  W1KQbqDZ  
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+Usage: rbin.sh [-hlp] [list of files]
+   -h: Display this help;
+   -l: List files in the recycle bin;
+   -p: Empty all files in the recycle bin;
+   [list of files] with no other flags,
+        these files will be moved to the
+        recycle bin.
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Error: Too many options enabled.
+
+
+[31m[FAILED!]
+
+[0m[48;2;0;0;200mYou passed 0/10 tests.[0m
+
+
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+     Testing Task 3: Functionalities of Recycle Bin
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+╔══════════╗
+║ Case  1  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//junk0.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  2  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 junk0.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  3  ║
+╚══════════╝
+Command:
+========
+tree -a /tmp/rbintest/
+
+STDOUT
+======
+Returned:
+---------
+/tmp/rbintest/
+├── .hidden1.txt
+├── .hideme
+├── .hideme2
+│   └── hide.txt
+├── dir1
+│   └── junk1.txt
+├── dir2
+│   ├── .hidden2.txt
+│   ├── dir3
+│   │   └── junk3.txt
+│   ├── file3.txt
+│   └── junk2.txt
+├── file1.txt
+├── file2.txt
+├── file4.txt
+├── junk0.txt
+├── lastone.txt
+└── yetanother
+
+7 directories, 11 files
+
+Expected:
+---------
+/tmp/rbintest/
+├── .hidden1.txt
+├── .hideme
+├── .hideme2
+│   └── hide.txt
+├── dir1
+│   └── junk1.txt
+├── dir2
+│   ├── .hidden2.txt
+│   ├── dir3
+│   │   └── junk3.txt
+│   ├── file3.txt
+│   └── junk2.txt
+├── file2.txt
+├── file4.txt
+├── lastone.txt
+└── yetanother
+
+7 directories, 9 files
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  4  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//junk0.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  5  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 junk0.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  6  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//dir1/junk1 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Warning: '/tmp/rbintest//dir1/junk1' not found.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  7  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 junk0.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  8  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//dir2/dir3/junk3.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  9  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 junk0.txt
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 junk3.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 10  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//.hideme 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 11  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 4
+drwxr-xr-x 2 bc bc 4096 Feb  8 18:34 .hideme/
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 junk0.txt
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 junk3.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 12  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -p
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 13  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 14  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//.hidden1.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 15  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 .hidden1.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 16  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//.hidden.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Warning: '/tmp/rbintest//.hidden.txt' not found.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 17  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 .hidden1.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 18  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//dir2/.hidden2.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 19  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 .hidden1.txt
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 .hidden2.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 20  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//.hideme2/hide.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 21  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 4
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 .hidden1.txt
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 .hidden2.txt
+drwxr-xr-x 2 bc bc 4096 Feb  8 18:34 hide.txt/
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 22  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -p
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 23  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 24  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//file2.txt /tmp/rbintest//file.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+Warning: '/tmp/rbintest//file.txt' not found.
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 25  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 file2.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 26  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//dir2/file3.txt /tmp/rbintest//file4.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 27  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 file2.txt
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 file3.txt
+-rw-r--r-- 1 bc bc 0 Feb  8 18:34 file4.txt
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 28  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" /tmp/rbintest//yetanother /tmp/rbintest//lastone.txt 
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 29  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 4
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 file2.txt
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 file3.txt
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 file4.txt
+-rw-r--r-- 1 bc bc    0 Feb  8 18:34 lastone.txt
+drwxr-xr-x 2 bc bc 4096 Feb  8 18:34 yetanother/
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 30  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -p
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 31  ║
+╚══════════╝
+Command:
+========
+"./rbin.sh" -l
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+total 0
+
+
+STDERR
+======
+Returned:
+---------
+./rbin.sh: line 13: syntax error near unexpected token `fi'
+./rbin.sh: line 13: `fi'
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case 32  ║
+╚══════════╝
+Command:
+========
+tree -a /tmp/rbintest/
+
+STDOUT
+======
+Returned:
+---------
+/tmp/rbintest/
+├── .hidden1.txt
+├── .hideme
+├── .hideme2
+│   └── hide.txt
+├── dir1
+│   └── junk1.txt
+├── dir2
+│   ├── .hidden2.txt
+│   ├── dir3
+│   │   └── junk3.txt
+│   ├── file3.txt
+│   └── junk2.txt
+├── file1.txt
+├── file2.txt
+├── file4.txt
+├── junk0.txt
+├── lastone.txt
+└── yetanother
+
+7 directories, 11 files
+
+Expected:
+---------
+/tmp/rbintest/
+├── .hideme2
+├── dir1
+│   └── junk1.txt
+└── dir2
+    ├── dir3
+    └── junk2.txt
+
+4 directories, 2 files
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+[31m[FAILED!]
+
+[0m[48;2;0;0;200mYou passed 0/32 tests.[0m
+
+
+[48;2;0;0;200mYour autotest grade is 0.00/100.[0m
+
+

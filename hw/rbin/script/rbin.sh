@@ -1,11 +1,16 @@
 #!/bin/bash
-# rbin.sh
-# Recycle Bin Script
 
+# *******************************************************************************
+#  Author  : Bhagawat Chapagain
+#  Date    : 02/08/2024
+#  Description: CS392 - Homework 1
+#  Pledge  : I pledge my honor that I have abided by the Stevens Honor System.
+# ******************************************************************************
 # Define recycle bin path
 readonly recycle_path="$HOME/.recycle"
 
 # Ensure the recycle bin directory exists
+
 mkdir -p "$recycle_path"
 
 # Function to display usage using heredoc
@@ -59,19 +64,20 @@ done
 # Prevent multiple flags
 if [ $((h_flag + l_flag + p_flag)) -gt 1 ]; then
   echo "Error: Too many options enabled." >&2
+  usage
   exit 1
 fi
 
 # Execute based on flags
 if [ $h_flag -eq 1 ]; then
   usage
-elif [ $l_flag -eq 1 ]; then
-  ls -lAF $recycle_path/
-  exit 0
-
+elif [ $l_flag -eq 1 ]; then 
+	ls -lAF "$recycle_path/"
+	exit 0
 elif [ $p_flag -eq 1 ]; then
   rm -rf "$recycle_path"/*
-  #echo "Recycle bin emptied."
+  rm -rf "$recycle_path"/.* 2> /dev/null
+  # echo "Recycle bin emptied."
   exit 0
 fi
 
@@ -79,12 +85,12 @@ fi
 shift $((OPTIND-1))
 if [ "$#" -gt 0 ]; then
   for file in "$@"; do
-    if [ -e "$file" ]; then
-		mv "$file" "$recycle_path/"
-    else
-      echo "Warning: '$file' not found." >&2
-    fi
-  done
+        if [[ -e $file ]]; then
+            mv $file $recycle_path/
+        else
+            echo "Warning: '$file' not found." >&2
+        fi
+    done
 else
   usage
 fi
