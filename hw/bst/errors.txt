@@ -1,0 +1,28 @@
+bstree.c: In function ‘main’:
+bstree.c: In function ‘main’:
+bstree.c:59:24: warning: passing argument 1 of ‘add_node’ makes pointer from integer without a cast [-Wint-conversion]
+   59 |         add_node(values[i], sizeof(int), &myTree, cmpr_int);
+      |                  ~~~~~~^~~
+      |                        |
+      |                        int
+bstree.c:59:24: warning: passing argument 1 of ‘add_node’ makes pointer from integer without a cast [-Wint-conversion]
+   59 |         add_node(values[i], sizeof(int), &myTree, cmpr_int);
+      |                  ~~~~~~^~~
+      |                        |
+      |                        int
+bstree.c:18:21: note: expected ‘void *’ but argument is of type ‘int’
+   18 | void add_node(void* data, size_t dataSize, tree_t* t, int (*cmp)(void*, void*)) {
+      |               ~~~~~~^~~~
+bstree.c:18:21: note: expected ‘void *’ but argument is of type ‘int’
+   18 | void add_node(void* data, size_t dataSize, tree_t* t, int (*cmp)(void*, void*)) {
+      |               ~~~~~~^~~~
+/usr/bin/ld: /usr/bin/ld: /tmp/ccPteK8i.o: in function `main':
+bstree.c:(.text+0x23d): undefined reference to `cmpr_int'
+/usr/bin/ld: bstree.c:(.text+0x264): undefined reference to `print_int'
+/usr/bin/ld: bstree.c:(.text+0x26f): undefined reference to `print_tree'
+/tmp/ccPteK8i.o: in function `main':
+bstree.c:(.text+0x23d): undefined reference to `cmpr_int'
+/usr/bin/ld: bstree.c:(.text+0x264): undefined reference to `print_int'
+/usr/bin/ld: bstree.c:(.text+0x26f): undefined reference to `print_tree'
+collect2: error: ld returned 1 exit status
+collect2: error: ld returned 1 exit status

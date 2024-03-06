@@ -1,0 +1,795 @@
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+     Testing Task 1: Validate Permission String
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+╔══════════╗
+║ Case  1  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ af-e-aee-df-
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'af-e-aee-df-' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'af-e-aee-df-' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  2  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ c--abefebccfec-bd
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'c--abefebccfec-bd' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'c--abefebccfec-bd' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  3  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ dc--bace
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'dc--bace' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'dc--bace' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  4  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ w
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'w' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'w' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  5  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ xwxwrwwwrxx-wrr-
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'xwxwrwwwrxx-wrr-' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'xwxwrwwwrxx-wrr-' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  6  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ --xxrr-rx
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string '--xxrr-rx' is invalid.
+
+Expected:
+---------
+Error: Permissions string '--xxrr-rx' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  7  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ -rxrxr-r-
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string '-rxrxr-r-' is invalid.
+
+Expected:
+---------
+Error: Permissions string '-rxrxr-r-' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  8  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ xwwrr----
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'xwwrr----' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'xwwrr----' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  9  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ xrwxrww-x
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'xrwxrww-x' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'xrwxrww-x' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m╔═════�[drwx------]  /tmp/pfindtest/
+├── [drwxr-xr-x]  .J
+│   ├── [drwxr-xr-x]  .BDwgWL0h
+│   │   ├── [--wx---r--]  .jpck
+│   │   └── [--wx---r--]  vN4a
+│   └── [-rwx--xr--]  DS8
+├── [drwxr-xr-x]  .vBQ
+│   ├── [--wx---r--]  .7Cvz
+│   ├── [-r-x--x---]  H
+│   ├── [-rwx--xr--]  Nj
+│   ├── [drwxr-xr-x]  kHvx
+│   │   ├── [--wx---r--]  .QYhywHWCk
+│   │   ├── [--wx---r--]  .jvak6nyi
+│   │   └── [-r-xr-----]  TXVOKq6
+│   ├── [--wx--x---]  m88ut7D
+│   └── [--wx--x---]  va
+├── [drwxr-xr-x]  D
+│   ├── [drwxr-xr-x]  .KF
+│   │   ├── [--wx---r--]  Uls
+│   │   └── [--wx---r--]  WArk8-mz
+│   ├── [-r-xr-----]  Cwu
+│   ├── [-r-x--x---]  X
+│   └── [-r-xr-----]  zwhPs39f
+├── [drwxr-xr-x]  XFIjt05k
+└── [drwxr-xr-x]  yYtV35P
+    ├── [drwxr-xr-x]  .0SQDFGBo
+    │   ├── [-rwx--xr--]  .aKopnw
+    │   └── [-r-xr-----]  CbI
+    ├── [--wx---r--]  .qS
+    └── [-r-xr-----]  8
+
+9 directories, 20 files
+�════╗
+║ Case 10  ║
+╚══════════╝
+Command:
+--------
+./a.out  ./ x--xrrwwr
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+Error: Permissions string 'x--xrrwwr' is invalid.
+
+Expected:
+---------
+Error: Permissions string 'x--xrrwwr' is invalid.
+
+
+EXIT CODE
+=========
+Returned:
+---------
+1
+Expected:
+---------
+1
+
+[32m[PASSED!]
+
+[0m[48;2;0;0;200mYou passed 10/10 tests.[0m
+
+
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+     Testing Task 2: Functionalities of pfind
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+╔══════════╗
+║ Case  1  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ r-x--x---
+
+STDOUT
+======
+Returned:
+---------
+/tmp/pfindtest//D/X
+/tmp/pfindtest//.vBQ/H
+
+Expected:
+---------
+/tmp/pfindtest/D/X
+/tmp/pfindtest/.vBQ/H
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  2  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ -wx-w-r--
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  3  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ rwx--xrw-
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  4  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ r-xr---w-
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  5  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ r--------
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  6  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ -wx--x---
+
+STDOUT
+======
+Returned:
+---------
+/tmp/pfindtest//.vBQ/va
+/tmp/pfindtest//.vBQ/m88ut7D
+
+Expected:
+---------
+/tmp/pfindtest/.vBQ/va
+/tmp/pfindtest/.vBQ/m88ut7D
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[31m[FAILED!]
+
+[0m╔══════════╗
+║ Case  7  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ -w--wx---
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  8  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ -w--w-rw-
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case  9  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ rwxr---w-
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m╔══════════╗
+║ Case 10  ║
+╚══════════╝
+Command:
+--------
+./a.out /tmp/pfindtest/ ----wxr--
+
+STDOUT
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+STDERR
+======
+Returned:
+---------
+
+Expected:
+---------
+
+
+EXIT CODE
+=========
+Returned:
+---------
+0
+Expected:
+---------
+0
+
+[32m[PASSED!]
+
+[0m[48;2;0;0;200mYou passed 8/10 tests.[0m
+
+
+[48;2;0;0;200mYour autotest grade is 86.00/100.[0m
+
+

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # *******************************************************************************
-#  Author  : Bhagawat Chapagain
-#  Date    : 02/08/2024
+#  Author  : 	Bhagawat Chapagain
+#  Date    : 	02/08/2024
 #  Description: CS392 - Homework 1
-#  Pledge  : I pledge my honor that I have abided by the Stevens Honor System.
+#  Pledge  : 	I pledge my honor that I have abided by the Stevens Honor System.
 # ******************************************************************************
 # Define recycle bin path
 readonly recycle_path="$HOME/.recycle"
