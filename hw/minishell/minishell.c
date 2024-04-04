@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <pwd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h> // Include the signal handling library
 volatile sig_atomic_t interrupted = 0;
 
@@ -309,12 +310,19 @@ int main(int argc, char **argv)
     // Main command loop
     do
     {
-        // Prompt and read command
-        if (interrupted)
-        {
-            printf("\n");
-        }
         printf("%s[%s]%s> ", BLUE, cwd, DEFAULT);
+
+        if (interrupted) {
+            // Print a new line for a clean prompt
+            printf("\n");
+            // Reset the flag
+            interrupted = 0;
+            // Clear the stdin buffer if necessary
+        
+            // Print the shell prompt again
+            // Continue with the next iteration of the loop
+            continue;
+        }
         if (fgets(last_command, sizeof(last_command), stdin) == NULL)
         {
             if (errno == EINTR && interrupted)
@@ -389,10 +397,13 @@ int main(int argc, char **argv)
             tokens[tokenCount] = NULL; // Ensure arguments are NULL-terminated
 
             pid_t pid = fork(); // Create a new process
+            int status;
+
             if (pid == -1)
             {
                 // If fork() fails, print an error and break
                 fprintf(stderr, "Error: fork() failed. %s.\n", strerror(errno));
+                exit(EXIT_FAILURE);
             }
             else if (pid == 0)
             {
@@ -405,9 +416,17 @@ int main(int argc, char **argv)
             }
             else
             {
-                int status;
 
-                if(waitpid(pid, &status, 0) != -1)
+                if(waitpid(pid, &status, 0) == -1)
+                {
+                    if(errno == EINTR && interrupted)
+                    {
+                    clearerr(stdin);
+                    interrupted = 0;
+                    printf("\n");
+                    }
+                }
+                else
                 {
                     fprintf(stderr, "Error: wait() failed. %s.\n", strerror(errno));
                 }
