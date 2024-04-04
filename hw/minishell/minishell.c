@@ -206,6 +206,11 @@ void lp()
                     strncpy(user, pwd->pw_name, sizeof(user) - 1);
                     user[sizeof(user) - 1] = '\0';
                 }
+                else
+                {
+                    fprintf(stderr, "Error: Cannot get passwd entry. %s.\n", strerror(errno));
+                    continue;
+                }
             }
         }
 
@@ -301,7 +306,6 @@ int main(int argc, char **argv)
         fprintf(stderr, "Error: Cannot get current working directory. %s.\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
-
     // Main command loop
     do
     {
@@ -310,10 +314,7 @@ int main(int argc, char **argv)
         {
             printf("\n");
         }
-
-        printf("%s[%s]>%s ", BLUE, cwd, DEFAULT);
-
-
+        printf("%s[%s]%s> ", BLUE, cwd, DEFAULT);
         if (fgets(last_command, sizeof(last_command), stdin) == NULL)
         {
             if (errno == EINTR && interrupted)
@@ -372,18 +373,14 @@ int main(int argc, char **argv)
                 exit(EXIT_FAILURE);
             }
             break;
-
         case PWD:
             // pwd: works
             printf("%s\n", cwd);
             break;
-
         case LF:
             lf(cwd);
             break;
         case LP:
-            // list processes
-            // works
             lp();
             break;
         case CMD_UNKNOWN:
@@ -408,9 +405,12 @@ int main(int argc, char **argv)
             }
             else
             {
-                // Parent process
                 int status;
-                waitpid(pid, &status, 0); // Wait for the child process to finish
+
+                if(waitpid(pid, &status, 0) != -1)
+                {
+                    fprintf(stderr, "Error: wait() failed. %s.\n", strerror(errno));
+                }
             }
         }
     } while (strcmp(last_command, "exit") != 0);
