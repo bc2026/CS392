@@ -6,7 +6,9 @@
 #define DEFAULT_FILE "question.txt"
 #define DEFAULT_PORT "25555"
 #define MAX_ENTRIES 50
+#define MAX_CLIENTS 3
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -14,9 +16,18 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <pthread.h>
 
-uint16_t conv_char_to_uint16(const char *);
 int read_questions(struct Entry *arr, char *filename);
+uint16_t conv_char_to_uint16(const char *);
+void *handle_client(void *arg, int client_sockets[MAX_CLIENTS], int active_connections);
+
+struct Player
+{
+    int fd;
+    int score;
+    char name[128];
+};
 
 typedef struct Entry
 {
@@ -24,6 +35,63 @@ typedef struct Entry
     char options[3][50];
     int answer_idx;
 } Entry;
+
+// This is a pseudo-function you would call to handle a client
+void *handle_client(void *arg, int client_sockets[MAX_CLIENTS], int active_connections)
+{
+    int index = *(int *)arg; // Cast and dereference the pointer to get the index
+    char buffer[256];
+
+    puts("Please type your name: \n");
+    while (1)
+    {
+        memset(buffer, 0, sizeof(buffer));
+        int n = read(client_sockets[index], buffer, sizeof(buffer) - 1);
+
+        if (n < 0)
+        {
+            perror("ERROR reading from socket");
+            break;
+        }
+        else if (n == 0)
+        {
+            // Client has closed the connection
+            printf("Lost connection");
+            break;
+        }
+
+        // Echo the received message back to the client
+
+        n = write(client_sockets[index], buffer, strlen(buffer));
+
+        if (n < 0)
+        {
+            perror("ERROR writing to socket");
+            break;
+        }
+
+        printf("Hi %s!", buffer);
+    }
+    close(client_sockets[index]);
+    client_sockets[index] = -1;
+    active_connections--;
+
+    return NULL; // Return NULL upon thread completion
+}
+
+uint16_t conv_char_to_uint16(const char *str)
+{
+    char *end;
+    uint16_t value = (uint16_t)strtoul(str, &end, 10); // Base 10 for decimal
+
+    if (*end != '\0')
+    {
+        // printf("Conversion error, non-integer data in input string\n");
+        return EXIT_FAILURE;
+    }
+
+    return value;
+}
 
 int load_questions(const char *filename, Entry entries[])
 {
@@ -142,7 +210,7 @@ int main(int argc, char **argv)
     //     printf("Non-option argument: %s\n", argv[index]);
     // }
 
-    printf("%s, %s, %s\n", file, ip, port);
+    // printf("%s, %s, %s\n", file, ip, port);
 
     // create socket
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -167,8 +235,7 @@ int main(int argc, char **argv)
 
     // listen for client
 
-    int backlog = 3; // Limit the number of pending connections
-    if (listen(sockfd, backlog) == -1)
+    if (listen(sockfd, MAX_CLIENTS) == -1)
     {
         perror("Listen failed. Exiting... ");
         return 1;
@@ -179,46 +246,80 @@ int main(int argc, char **argv)
     Entry entries[MAX_ENTRIES];
     int num_entries = load_questions("questions.txt", entries);
 
-    // Example usage: Print loaded questions and answers
-    for (int i = 0; i < num_entries; i++)
-    {
-        printf("Question: %s\n", entries[i].prompt);
-        printf("Options: %s, %s, %s\n", entries[i].options[0], entries[i].options[1], entries[i].options[2]);
-        printf("Correct answer: %s\n", entries[i].options[entries[i].answer_idx]);
-        printf("\n");
-    }
+    // // Example usage: Print loaded questions and answers
+    // for (int i = 0; i < num_entries; i++)
+    // {
+    //     printf("Question: %s\n", entries[i].prompt);
+    //     printf("Options: %s, %s, %s\n", entries[i].options[0], entries[i].options[1], entries[i].options[2]);
+    //     printf("Correct answer: %s\n", entries[i].options[entries[i].answer_idx]);
+    //     printf("\n");
+    // }
 
-    // intermediate steps
+    // accept connections
     struct sockaddr_in cli_addr;
     socklen_t clilen = sizeof(cli_addr);
 
-    int newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen);
-    if (newsockfd < 0)
+    pthread_t threads[MAX_CLIENTS];
+    int indices[MAX_CLIENTS]; // Store indices for thread arguments
+
+    int client_sockets[MAX_CLIENTS];
+    int active_connections = 0;
+    for (int i = 0; i < MAX_CLIENTS; i++)
     {
-        perror("ERROR on accept");
-        exit(1);
+        client_sockets[i] = -1; // Initialize all entries to -1 indicating unused slot
     }
 
-    char buffer[256];
-    memset(buffer, 0, 256); // Clear buffer
-
-    int n = read(newsockfd, buffer, 255);
-    if (n < 0)
+    while (1)
     {
-        perror("ERROR reading from socket");
-        exit(1);
+        if (active_connections < MAX_CLIENTS)
+        {
+            int newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen);
+            if (newsockfd < 0 && errno != EINTR)
+            {
+                perror("ERROR on accept");
+                continue;
+            }
+
+            // Print client connection details
+            puts("New connection detected!");
+
+            int found = 0;
+            for (int i = 0; i < MAX_CLIENTS; i++)
+            {
+                if (client_sockets[i] == -1)
+                { // Find a free slot
+                    client_sockets[i] = newsockfd;
+                    active_connections++;
+                    indices[i] = i; // Prepare the index for the thread
+
+                    // Create a new thread for each client
+                    if (pthread_create(&threads[i], NULL, handle_client, &indices[i]) != 0)
+                    {
+                        perror("Failed to create thread");
+                    }
+                    found = 1;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                printf("Failed to find a free slot for new client\n");
+                close(newsockfd); // Close the socket if no free slot is found
+            }
+        }
+        else
+        {
+            // Maximum clients reached, you can decide to close the socket
+            // or handle it according to your application needs
+            printf("Maximum client connections reached. New connections will be temporarily blocked.\n");
+            sleep(1); // Sleep to prevent busy waiting
+        }
     }
 
-    printf("Here is the message: %s\n", buffer);
-
-    n = write(newsockfd, buffer, strlen(buffer));
-    if (n < 0)
-    {
-        perror("ERROR writing to socket");
-        exit(1);
-    }
-
-    // close socket
-    close(newsockfd);
+    // Join threads and clean up (not shown)
     close(sockfd);
+    return 0;
+
+    puts("The game starts!");
 }
