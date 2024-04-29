@@ -1,32 +1,90 @@
 // I pledge my honor that I have abided by the Stevens Honor System.
 // Bhagawat Chapagain
+
 #define _POSIX_C_SOURCE 2
 #define DEFAULT_IP "127.0.0.1"
 #define DEFAULT_FILE "question.txt"
 #define DEFAULT_PORT "25555"
+#define MAX_ENTRIES 50
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-#include <sys/socket.h>
+#include <string.h>
 #include <sys/types.h>
-#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 uint16_t conv_char_to_uint16(const char *);
+int read_questions(struct Entry *arr, char *filename);
 
-uint16_t conv_char_to_uint16(const char *str)
+typedef struct Entry
 {
-    char *end;
-    uint16_t value = (uint16_t)strtoul(str, &end, 10); // Base 10 for decimal
+    char prompt[1024];
+    char options[3][50];
+    int answer_idx;
+} Entry;
 
-    if (*end != '\0')
+int load_questions(const char *filename, Entry entries[])
+{
+    FILE *file = fopen(filename, "r");
+    if (!file)
     {
-        // printf("Conversion error, non-integer data in input string\n");
-        return EXIT_FAILURE;
+        perror("Failed to open file");
+        return -1; // Return -1 to indicate file opening error
     }
 
-    return value;
+    int entry_count = 0;
+    char line[1024];
+    while (entry_count < MAX_ENTRIES)
+    {
+        // Read the question
+        if (!fgets(line, sizeof(line), file) || strlen(line) == 1)
+        {
+            break; // Break if reading the question fails or line is empty
+        }
+        line[strcspn(line, "\n")] = 0;
+        strncpy(entries[entry_count].prompt, line, sizeof(entries[entry_count].prompt));
+
+        // Read options line
+        if (!fgets(line, sizeof(line), file))
+        {
+            break; // Break if reading options fails
+        }
+        line[strcspn(line, "\n")] = 0;
+        sscanf(line, "%49s %49s %49s", entries[entry_count].options[0], entries[entry_count].options[1], entries[entry_count].options[2]);
+
+        // Read correct answer line
+        if (!fgets(line, sizeof(line), file))
+        {
+            break; // Break if reading the correct answer fails
+        }
+        line[strcspn(line, "\n")] = 0;
+
+        // Determine the correct answer index
+        int found = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            if (strcmp(entries[entry_count].options[i], line) == 0)
+            {
+                entries[entry_count].answer_idx = i;
+                found = 1;
+                break;
+            }
+        }
+        if (!found)
+        {
+            fprintf(stderr, "Error: Correct answer '%s' not found among options for question %d\n", line, entry_count + 1);
+        }
+
+        // Optionally skip a blank line after each entry if present
+        fgets(line, sizeof(line), file);
+
+        entry_count++;
+    }
+
+    fclose(file);
+    return entry_count; // Return the number of entries read
 }
 int main(int argc, char **argv)
 {
@@ -108,7 +166,27 @@ int main(int argc, char **argv)
     }
 
     // listen for client
-    listen(sockfd, 5);
+
+    int backlog = 3; // Limit the number of pending connections
+    if (listen(sockfd, backlog) == -1)
+    {
+        perror("Listen failed. Exiting... ");
+        return 1;
+    }
+
+    puts("Welcome to 392 Trivia!");
+
+    Entry entries[MAX_ENTRIES];
+    int num_entries = load_questions("questions.txt", entries);
+
+    // Example usage: Print loaded questions and answers
+    for (int i = 0; i < num_entries; i++)
+    {
+        printf("Question: %s\n", entries[i].prompt);
+        printf("Options: %s, %s, %s\n", entries[i].options[0], entries[i].options[1], entries[i].options[2]);
+        printf("Correct answer: %s\n", entries[i].options[entries[i].answer_idx]);
+        printf("\n");
+    }
 
     // intermediate steps
     struct sockaddr_in cli_addr;

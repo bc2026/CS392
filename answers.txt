@@ -1,0 +1,96 @@
+Question: Who sang the title song for the latest Bond film, No Time to Die?
+Options: Adele, Sam_Smith, Billie_Eilish
+Correct answer: Billie_Eilish
+
+Question: Which flies a green, white, and orange (in that order) tricolor flag? 
+Options: Ireland, Ivory_Coast, Italy
+Correct answer: Ireland
+
+Question: What company makes the Xperia model of smartphone?
+Options: Samsung, Sony, Nokia
+Correct answer: Sony
+
+Question: Which city is home to the Brandenburg Gate?
+Options: Vienna, Zurich, Berlin
+Correct answer: Berlin
+
+Question: Which of the following is NOT a fruit?
+Options: Rhubarb, Tomatoes, Avocados
+Correct answer: Rhubarb
+
+Question: Where was the first example of paper money used?
+Options: China, Turkey, Greece
+Correct answer: China
+
+Question: Who is generally considered the inventor of the motor car?
+Options: Henry_Ford, Karl_Benz, Henry_M.Leland
+Correct answer: Karl_Benz
+
+Question: If you were looking at Iguazu Falls, on what continent would you be?
+Options: Asia, Africa, South_America
+Correct answer: South_America
+
+Question: What number was the Apollo mission that successfully put a man on the moon for the first time in human history? 
+Options: Apollo11, Apollo12, Apollo13
+Correct answer: Apollo11
+
+Question: Which of the following languages has the longest alphabet?
+Options: Greek, Russian, Arabic
+Correct answer: Russian
+
+Question: Who was the lead singer of the band The Who?
+Options: Roger_Daltrey, Don_Henley, Robert_Plant
+Correct answer: Roger_Daltrey
+
+Question: What spirit is used in making a Tom Collins?
+Options: Vodka, Rum, Gin
+Correct answer: Gin
+
+Question: The fear of insects is known as what?
+Options: Entomophobia, Arachnophobia, Ailurophobia
+Correct answer: Entomophobia
+
+Question: What was the name of the Franco-British supersonic commercial plane that operated from 1976-2003?
+Options: Accord, Concorde, Mirage
+Correct answer: Concorde
+
+Question: Which horoscope sign is a fish?
+Options: Aquarius, Cancer, Pisces
+Correct answer: Pisces
+
+Question: What is the largest US state (by landmass)?
+Options: Texas, Alaska, California
+Correct answer: Alaska
+
+Question: Which app has the most total users?
+Options: TikTok, Snapchat, Instagram
+Correct answer: Instagram
+
+Question: Which Game of Thrones character is known as the Young Wolf?
+Options: Robb_Stark, Arya_Stark, Sansa_Stark
+Correct answer: Robb_Stark
+
+Question: What city hosted the 2000 Olympic Games?
+Options: Tokyo, Beijing, Sydney
+Correct answer: Sydney
+
+Question: How many plays do people (generally) believe that Shakespeare wrote?
+Options: 27, 37, 47
+Correct answer: 37
+
+Question: How long did dinosaurs live on the earth?
+Options: 100-150_million_years, 150-200_million_years, 200+_million_years
+Correct answer: 150-200_million_years
+
+Question: What Italian city is famous for its system of canals?
+Options: Rome, Naples, Venice
+Correct answer: Venice
+
+Question: What is the strongest muscle in the human body?
+Options: Jaw, Heart, Glutes
+Correct answer: Jaw
+
+Question: What is the longest-running Broadway show ever?
+Options: LesMiserable, The_Lion_King, The_Phantom_of_the_Opera
+Correct answer: The_Phantom_of_the_Opera
+
