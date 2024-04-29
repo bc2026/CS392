@@ -2,11 +2,13 @@
 // Bhagawat Chapagain
 
 #define _POSIX_C_SOURCE 2
+#define _GNU_SOURCE
 #define DEFAULT_IP "127.0.0.1"
-#define DEFAULT_FILE "question.txt"
+#define DEFAULT_FILE "questions.txt"
 #define DEFAULT_PORT "25555"
 #define MAX_ENTRIES 50
 #define MAX_CLIENTS 3
+#define NAME_SIZE 16
 
 #include <errno.h>
 #include <stdio.h>
@@ -17,10 +19,15 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include <string.h>
 
-int read_questions(struct Entry *arr, char *filename);
-uint16_t conv_char_to_uint16(const char *);
-void *handle_client(void *arg, int client_sockets[MAX_CLIENTS], int active_connections);
+struct ClientData
+{
+    int client_socket;
+    int *active_connections;
+    struct Player *players;
+    int index;
+};
 
 struct Player
 {
@@ -36,47 +43,60 @@ typedef struct Entry
     int answer_idx;
 } Entry;
 
-// This is a pseudo-function you would call to handle a client
-void *handle_client(void *arg, int client_sockets[MAX_CLIENTS], int active_connections)
+int read_questions(Entry *entries, const char *filename);
+uint16_t conv_char_to_uint16(const char *);
+void *handle_client(void *arg);
+
+void *handle_client(void *arg)
 {
-    int index = *(int *)arg; // Cast and dereference the pointer to get the index
-    char buffer[256];
+    struct ClientData *data = (struct ClientData *)arg;
+    int client_socket = data->client_socket;
+    int *active_connections = data->active_connections;
 
-    puts("Please type your name: \n");
-    while (1)
+    if (data->index < 0 || data->index >= MAX_CLIENTS)
     {
-        memset(buffer, 0, sizeof(buffer));
-        int n = read(client_sockets[index], buffer, sizeof(buffer) - 1);
-
-        if (n < 0)
-        {
-            perror("ERROR reading from socket");
-            break;
-        }
-        else if (n == 0)
-        {
-            // Client has closed the connection
-            printf("Lost connection");
-            break;
-        }
-
-        // Echo the received message back to the client
-
-        n = write(client_sockets[index], buffer, strlen(buffer));
-
-        if (n < 0)
-        {
-            perror("ERROR writing to socket");
-            break;
-        }
-
-        printf("Hi %s!", buffer);
+        fprintf(stderr, "Index out of bounds\n");
+        return NULL;
     }
-    close(client_sockets[index]);
-    client_sockets[index] = -1;
-    active_connections--;
 
-    return NULL; // Return NULL upon thread completion
+    // Check for a valid socket descriptor
+    if (data->client_socket < 0)
+    {
+        fprintf(stderr, "Invalid socket descriptor\n");
+        return NULL;
+    }
+
+    // Greet the client
+    const char *greeting = "Please type your name: ";
+    send(data->client_socket, greeting, strlen(greeting), 0);
+
+    // Receive the name from the client
+    char buffer[256] = {0};
+    ssize_t bytes_read = recv(data->client_socket, buffer, sizeof(buffer) - 1, 0);
+
+    if (bytes_read <= 0)
+    {
+        // Handle disconnection properly without exiting the whole server
+        printf("User disconnected or error occurred\n");
+        *(active_connections)--;
+        close(client_socket);
+        return NULL;
+    }
+
+    // Null-terminate the received data and store the name
+    buffer[bytes_read] = '\0';
+    strncpy(data->players[data->index].name, buffer, NAME_SIZE - 1);
+
+    // Send confirmation back to the client
+    char confirm[NAME_SIZE + 32];
+    snprintf(confirm, sizeof(confirm), "Hi %s! You're now connected.\n", data->players[data->index].name);
+    send(data->client_socket, confirm, strlen(confirm), 0);
+
+    // TODO: Handle further client-server communication
+
+    // Close the client socket and end the thread
+    close(data->client_socket);
+    return NULL;
 }
 
 uint16_t conv_char_to_uint16(const char *str)
@@ -93,7 +113,7 @@ uint16_t conv_char_to_uint16(const char *str)
     return value;
 }
 
-int load_questions(const char *filename, Entry entries[])
+int read_questions(Entry *entries, const char *filename)
 {
     FILE *file = fopen(filename, "r");
     if (!file)
@@ -156,95 +176,135 @@ int load_questions(const char *filename, Entry entries[])
 }
 int main(int argc, char **argv)
 {
+    // Set default values
     const char *ip = DEFAULT_IP;
-    const char *file = DEFAULT_FILE;
     const char *port = DEFAULT_PORT;
+    const char *file = DEFAULT_FILE;
 
-    char error[1024] = {0};
-    char usage[1024] = "Usage: ";
-    char *first_arg = strdup(argv[0]);
-
-    char usage_message[] = " \
-    [-f question_file] [-i IP_address] [-p port_number] [-h]\n\n\
-    \t- f question_file\tDefault to \"question.txt\";\n\
-    \t- i IP_address\t\tDefault to \"127.0.0.1\";\n\
-    \t- p port_number\t\tDefault to 25555;\n\
-    \t- h            \t\tDisplay this help info.";
-
-    if (first_arg)
-    {
-        strcat(usage, first_arg);
-        free(first_arg);
-    }
-
-    strcat(usage, usage_message);
-
-    char opt;
-
-    while ((opt = getopt(argc, argv, ":f:i:ph")) != -1)
+    // Process command-line arguments
+    int opt;
+    while ((opt = getopt(argc, argv, "f:i:p:h")) != -1)
     {
         switch (opt)
         {
-        case 'h':
-            puts(usage);
-            return 0;
-        case 'f':
+        case 'f': // Question file
             file = optarg;
             break;
-        case 'i':
+        case 'i': // IP address
             ip = optarg;
             break;
-        case 'p':
+        case 'p': // Port number
             port = optarg;
             break;
-        case '?':
-            snprintf(error, sizeof(error), "Error: Unknown option '-%c' received.\n", optopt);
-            fputs(error, stderr);
-            return EXIT_FAILURE;
+        case 'h': // Help
+            // Display usage
+            printf("Usage: %s [-f question_file] [-i IP_address] [-p port_number] [-h]\n", argv[0]);
+            exit(EXIT_SUCCESS);
+        case '?': // Unknown option
+            // Display error message and exit
+            fprintf(stderr, "Unknown option: %c\n", optopt);
+            exit(EXIT_FAILURE);
         }
     }
 
-    // Handle non-option arguments here
-    // for (int index = optind; index < argc; index++)
-    // {
-    //     printf("Non-option argument: %s\n", argv[index]);
-    // }
-
-    // printf("%s, %s, %s\n", file, ip, port);
-
-    // create socket
+    // Create a TCP socket
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0)
     {
         perror("ERROR opening socket");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
-    // bind socket
+    // Set server address and bind
     struct sockaddr_in serv_addr;
-    memset(&serv_addr, 0, sizeof(serv_addr)); // Clear structure
+    memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = INADDR_ANY; // Listen on any IP address
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(conv_char_to_uint16(port));
 
     if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
         perror("ERROR on binding");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
-    // listen for client
-
-    if (listen(sockfd, MAX_CLIENTS) == -1)
+    // Start listening on the socket
+    if (listen(sockfd, MAX_CLIENTS) < 0)
     {
-        perror("Listen failed. Exiting... ");
-        return 1;
+        perror("ERROR on listen");
+        exit(EXIT_FAILURE);
     }
 
-    puts("Welcome to 392 Trivia!");
-
+    // Load the questions from the file
     Entry entries[MAX_ENTRIES];
-    int num_entries = load_questions("questions.txt", entries);
+    int num_entries = read_questions(entries, file);
+    if (num_entries < 0)
+    {
+        // Handle error if questions couldn't be loaded
+        fprintf(stderr, "Failed to load questions from the file.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Main loop to accept clients
+    struct Player players[MAX_CLIENTS];
+    struct ClientData client_data[MAX_CLIENTS];
+    pthread_t threads[MAX_CLIENTS];
+    int active_connections = 0;
+
+    while (1)
+    {
+        struct sockaddr_in cli_addr;
+        socklen_t clilen = sizeof(cli_addr);
+        int newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen);
+        if (newsockfd < 0)
+        {
+            perror("ERROR on accept");
+            continue; // Continue to the next iteration of the loop
+        }
+
+        // New client connection logic
+        printf("New connection detected!\n");
+
+        // Allocate ClientData on heap for thread persistence
+        struct ClientData *cd = malloc(sizeof(struct ClientData));
+        if (!cd)
+        {
+            perror("malloc");
+            close(newsockfd);
+            continue;
+        }
+
+        cd->client_socket = newsockfd;
+        cd->active_connections = &active_connections;
+        cd->players = players;          // Ensure players is allocated and valid
+        cd->index = active_connections; // Assuming active_connections is next free index
+
+        if (pthread_create(&threads[active_connections], NULL, handle_client, cd) != 0)
+        {
+            perror("Failed to create thread");
+            free(cd);
+            close(newsockfd);
+        }
+        else
+        {
+            active_connections++; // Only increment if thread creation is successful
+        }
+
+        if (active_connections >= MAX_CLIENTS)
+        {
+            // Maximum clients reached
+            printf("Max connections reached.\n");
+        }
+    }
+
+    // Cleanup code for server shutdown
+    for (int i = 0; i < active_connections; i++)
+    {
+        pthread_join(threads[i], NULL); // Wait for threads to finish
+    }
+    close(sockfd); // Close server socket
+
+    puts("The game starts!");
 
     // // Example usage: Print loaded questions and answers
     // for (int i = 0; i < num_entries; i++)
@@ -255,71 +315,36 @@ int main(int argc, char **argv)
     //     printf("\n");
     // }
 
-    // accept connections
-    struct sockaddr_in cli_addr;
-    socklen_t clilen = sizeof(cli_addr);
+    int winner = -1;
 
-    pthread_t threads[MAX_CLIENTS];
-    int indices[MAX_CLIENTS]; // Store indices for thread arguments
-
-    int client_sockets[MAX_CLIENTS];
-    int active_connections = 0;
-    for (int i = 0; i < MAX_CLIENTS; i++)
+    for (size_t i = 0; i < MAX_ENTRIES; i++)
     {
-        client_sockets[i] = -1; // Initialize all entries to -1 indicating unused slot
-    }
+        printf("Question <%d>: %s\n", i, entries[i].prompt);
+        printf("PRESS 1: %s\n", entries[i].options[0]);
+        printf("PRESS 2: %s\n", entries[i].options[1]);
+        printf("PRESS 3: %s\n", entries[i].options[2]);
 
-    while (1)
-    {
-        if (active_connections < MAX_CLIENTS)
+        // TODO: catch input and change each players[i] accordingly:
+        // a player answered the question right, they get one point; otherwise they get -1 pts
+
+        printf("Answer: %s\n", entries[i].options[entries[i].answer_idx]);
+
+        if (i == MAX_ENTRIES - 1)
         {
-            int newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen);
-            if (newsockfd < 0 && errno != EINTR)
+            int max = 0;
+            for (size_t i = 0; i < MAX_CLIENTS; i++)
             {
-                perror("ERROR on accept");
-                continue;
-            }
-
-            // Print client connection details
-            puts("New connection detected!");
-
-            int found = 0;
-            for (int i = 0; i < MAX_CLIENTS; i++)
-            {
-                if (client_sockets[i] == -1)
-                { // Find a free slot
-                    client_sockets[i] = newsockfd;
-                    active_connections++;
-                    indices[i] = i; // Prepare the index for the thread
-
-                    // Create a new thread for each client
-                    if (pthread_create(&threads[i], NULL, handle_client, &indices[i]) != 0)
-                    {
-                        perror("Failed to create thread");
-                    }
-                    found = 1;
-                    break;
+                if (players[i].score > max)
+                {
+                    max = players[i].score;
+                    winner = i;
                 }
             }
 
-            if (!found)
-            {
-                printf("Failed to find a free slot for new client\n");
-                close(newsockfd); // Close the socket if no free slot is found
-            }
-        }
-        else
-        {
-            // Maximum clients reached, you can decide to close the socket
-            // or handle it according to your application needs
-            printf("Maximum client connections reached. New connections will be temporarily blocked.\n");
-            sleep(1); // Sleep to prevent busy waiting
+            printf("Congrats %s!", players[winner].name);
+            break;
         }
     }
 
-    // Join threads and clean up (not shown)
-    close(sockfd);
     return 0;
-
-    puts("The game starts!");
 }
