@@ -1,3 +1,6 @@
+// Bhagawat Chapagain
+// I pledge my honor that I have abided by the Stevens Honor System.
+
 #define _POSIX_C_SOURCE 2
 #define _GNU_SOURCE
 #define MAX_ENTRIES 50
@@ -33,34 +36,144 @@ typedef struct Player
     char name[128];
 } Player;
 
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/select.h>
+#include <stdbool.h>
+// #include "your_structs.h" // Include your Player and Entry structs
+void announce_winner(Player *players, int num_clients)
+{
+    int max_score = -1;
+    int winner_index = -1;
+    char message[BUFLEN];
+
+    // Find the player with the highest score
+    for (int i = 0; i < num_clients; i++)
+    {
+        if (players[i].fd != 0 && players[i].score > max_score)
+        {
+            max_score = players[i].score;
+            winner_index = i;
+        }
+    }
+
+    // Check if there's a valid winner
+    if (winner_index != -1)
+    {
+        // Formulate the congratulatory message
+        snprintf(message, sizeof(message), "Congrats, %s!", players[winner_index].name);
+    }
+    else
+    {
+        // In case no valid scores were found or all players disconnected
+        strncpy(message, "No winner this game.", sizeof(message));
+    }
+
+    // Broadcast the message to all connected clients
+    for (int i = 0; i < num_clients; i++)
+    {
+        if (players[i].fd != 0)
+        {
+            send(players[i].fd, message, strlen(message), 0);
+        }
+    }
+}
+
 void start_game(Player *players, Entry *questions)
 {
-    char buffer[BUFLEN]; // Buffer to hold the full message to send
+    char buffer[BUFLEN];
+    fd_set readfds;
+    int max_fd = 0;
 
-    // Loop through each question
+    // Prepare the full message to send for each question
     for (int i = 0; i < MAX_ENTRIES; i++)
     {
-        // Check if the question has been loaded correctly (non-empty prompt)
         if (strlen(questions[i].prompt) == 0)
         {
             continue; // Skip if the prompt is empty
         }
 
-        // Prepare the full message to send for current question
-        snprintf(buffer, sizeof(buffer), "%s\nOptions: %s, %s, %s\n",
-                 questions[i].prompt,
-                 questions[i].options[0],
-                 questions[i].options[1],
-                 questions[i].options[2]);
+        snprintf(buffer, sizeof(buffer), "%s\nOptions: 1) %s, 2) %s, 3) %s\n",
+                 questions[i].prompt, questions[i].options[0], questions[i].options[1], questions[i].options[2]);
 
         // Send the question and options to each connected client
         for (int j = 0; j < MAX_CLIENTS; j++)
         {
-            if (players[j].fd != 0)
-            { // Check if the socket is active
-                if (send(players[j].fd, buffer, strlen(buffer), 0) < strlen(buffer))
+            if (players[j].fd != 0) // Check if the socket is active
+            {
+                send(players[j].fd, buffer, strlen(buffer), 0);
+            }
+        }
+
+        // Set up select parameters
+        FD_ZERO(&readfds);
+        max_fd = 0;
+        for (int j = 0; j < MAX_CLIENTS; j++)
+        {
+            if (players[j].fd > 0)
+            {
+                FD_SET(players[j].fd, &readfds);
+                if (players[j].fd > max_fd)
                 {
-                    perror("Failed to send full message");
+                    max_fd = players[j].fd;
+                }
+            }
+        }
+
+        // Wait for an answer using select without a timeout
+        int activity = select(max_fd + 1, &readfds, NULL, NULL, NULL);
+        if (activity < 0)
+        {
+            perror("select error");
+            continue;
+        }
+
+        bool answer_received = false;
+        char correct_answer_msg[BUFLEN];
+
+        // Check which FD is ready and read the response
+        for (int j = 0; j < MAX_CLIENTS && !answer_received; j++)
+        {
+            if (players[j].fd > 0 && FD_ISSET(players[j].fd, &readfds))
+            {
+                int bytes_received = recv(players[j].fd, buffer, sizeof(buffer) - 1, 0);
+                if (bytes_received > 0)
+                {
+                    buffer[bytes_received] = '\0';
+                    int answer_index = atoi(buffer) - 1;
+                    answer_received = true;
+
+                    // Formulate response based on whether the answer is correct
+                    if (answer_index == questions[i].answer_idx)
+                    {
+                        snprintf(correct_answer_msg, sizeof(correct_answer_msg), "Correct answer from %s! The answer was: %s\n",
+                                 players[j].name, questions[i].options[questions[i].answer_idx]);
+                    }
+                    else
+                    {
+                        snprintf(correct_answer_msg, sizeof(correct_answer_msg), "Incorrect answer from %s. The correct answer was: %s\n",
+                                 players[j].name, questions[i].options[questions[i].answer_idx]);
+                    }
+
+                    // Send the result to all clients
+                    for (int k = 0; k < MAX_CLIENTS; k++)
+                    {
+                        if (players[k].fd != 0)
+                        {
+                            send(players[k].fd, correct_answer_msg, strlen(correct_answer_msg), 0);
+                        }
+                    }
+                }
+                else if (bytes_received == 0)
+                {
+                    printf("Player %s disconnected.\n", players[j].name);
+                    close(players[j].fd);
+                    players[j].fd = 0; // Reset fd after disconnection
+                }
+                else
+                {
+                    perror("recv failed");
                 }
             }
         }
@@ -78,7 +191,7 @@ int read_questions(Entry *entries, const char *filename)
 
     int entry_count = 0;
     char line[1024];
-    while (entry_count < MAX_ENTRIES)
+    while (entry_count < MAX_ENTRIES - 1)
     {
         // Read the question
         if (!fgets(line, sizeof(line), file) || strlen(line) == 1)
@@ -307,7 +420,7 @@ int main(int argc, char *argv[]) // Changed to non-const argv to use with getopt
 
     accept_players(sockfd, players);
     start_game(players, entries); // Ensure `start_game` is adapted to use `Player` array
-    return 0;
 
-    return 0; // Properly return from main.
+    announce_winner(players, MAX_CLIENTS);
+    return 0;
 }

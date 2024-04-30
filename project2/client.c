@@ -107,22 +107,17 @@ int main(int argc, char *argv[])
             if (strstr(inbuf, "Please type your name:"))
             {
                 char name[BUFLEN];
-                fgets(name, BUFLEN, stdin);
-                send_message(client_socket, name);
+                fgets(name, BUFLEN, stdin);        // Get the player's name from stdin
+                send_message(client_socket, name); // Send the name back to the server
             }
-            if (strstr(inbuf, "Question"))
+
+            // Improved recognition of questions and options
+            if (strstr(inbuf, "Options:"))
             {
+                printf("Your answer: ");
                 char answer[BUFLEN];
                 fgets(answer, BUFLEN, stdin);
-
-                if (isdigit(atoi(answer)))
-                {
-                    send_message(client_socket, answer);
-                }
-                else
-                {
-                    send_message(client_socket, "-1");
-                }
+                send_message(client_socket, answer);
             }
         }
         else
