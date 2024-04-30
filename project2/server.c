@@ -87,11 +87,14 @@ void start_game(Player *players, Entry *questions)
     int max_fd = 0;
 
     // Prepare the full message to send for each question
-    for (int i = 0; i < MAX_ENTRIES; i++)
+    for (int i = 0; i < MAX_ENTRIES - 1; i++)
     {
-        if (strlen(questions[i].prompt) == 0)
+        if (strlen(questions[i].prompt) == 0 ||     // Check if the prompt is empty
+            strlen(questions[i].options[0]) == 0 || // Check if option 1 is empty
+            strlen(questions[i].options[1]) == 0 || // Check if option 2 is empty
+            strlen(questions[i].options[2]) == 0)   // Check if option 3 is empty
         {
-            continue; // Skip if the prompt is empty
+            continue; // Skip if any of the required fields are empty
         }
 
         snprintf(buffer, sizeof(buffer), "%s\nOptions: 1) %s, 2) %s, 3) %s\n",
@@ -178,6 +181,7 @@ void start_game(Player *players, Entry *questions)
             }
         }
     }
+    printf("End of game\n");
 }
 
 int read_questions(Entry *entries, const char *filename)

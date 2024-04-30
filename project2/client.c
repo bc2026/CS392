@@ -8,6 +8,7 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <getopt.h>
 
 #define MIN_PORT 1024
 #define MAX_PORT 65535
@@ -58,22 +59,43 @@ void print_prompt(const char *username)
 
 int main(int argc, char *argv[])
 {
-    if (argc != 3)
-    {
-        fprintf(stderr, "Usage: %s <server IP> <port>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
+    const char *default_ip = "127.0.0.1";
+    const int default_port = 25555;
 
-    int client_socket, port;
-    struct sockaddr_in server_addr;
-    const char *server_ip = argv[1];
-    port = atoi(argv[2]);
+    const char *server_ip = default_ip;
+    int port = default_port;
+
+    int opt;
+    while ((opt = getopt(argc, argv, "i:p:h")) != -1)
+    {
+        switch (opt)
+        {
+        case 'i':
+            server_ip = optarg;
+            break;
+        case 'p':
+            port = atoi(optarg);
+            break;
+        case 'h':
+            printf("Usage: %s [-i IP_address] [-p port_number] [-h]\n", argv[0]);
+            printf("  -i IP_address: Default to \"%s\"\n", default_ip);
+            printf("  -p port_number: Default to %d\n", default_port);
+            printf("  -h: Display this help info.\n");
+            return EXIT_SUCCESS;
+        default:
+            fprintf(stderr, "Usage: %s [-i IP_address] [-p port_number] [-h]\n", argv[0]);
+            return EXIT_FAILURE;
+        }
+    }
 
     if (port < MIN_PORT || port > MAX_PORT)
     {
         fprintf(stderr, "Error: Port must be in range [%d, %d].\n", MIN_PORT, MAX_PORT);
         return EXIT_FAILURE;
     }
+
+    int client_socket;
+    struct sockaddr_in server_addr;
 
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
