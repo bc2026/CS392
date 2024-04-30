@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 2
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -6,6 +7,7 @@
 #include <sys/socket.h>
 
 #define BUFFER_SIZE 1024
+#define NAME_SIZE 16
 
 void display_help(const char *program_name)
 {
@@ -53,6 +55,9 @@ int connect_to_server(const char *ip_address, int port)
 void interact_with_server(int server_fd)
 {
     char buffer[BUFFER_SIZE];
+    // Flag to check if the name has been sent
+    int name_sent = 0;
+
     while (1)
     {
         // Clear the buffer and read message from the server
@@ -63,37 +68,31 @@ void interact_with_server(int server_fd)
             perror("read");
             break;
         }
-        else if (bytes == 0)
+        // Check if the server is asking for the player's name and if it hasn't been sent yet
+        if (strstr(buffer, "Please type your name:") != NULL && !name_sent)
         {
-            printf("Server closed the connection.\n");
-            break;
-        }
-
-        printf("Server: %s\n", buffer);
-
-        // Handle server messages here. For example, if the server asks for the player's name,
-        // you should send your name to the server.
-
-        // If this is a question, prompt the user for input and send the answer to the server.
-        if (strstr(buffer, "Question") != NULL)
-        {
-            printf("Your answer: ");
-            fflush(stdout); // Ensure "Your answer" is printed before reading input
-
-            memset(buffer, 0, sizeof(buffer));
-            if (fgets(buffer, BUFFER_SIZE, stdin) == NULL)
+            char name[NAME_SIZE];
+            memset(name, 0, NAME_SIZE);
+            if (fgets(name, NAME_SIZE, stdin) == NULL)
             {
                 perror("fgets");
                 break;
             }
 
-            // Send the answer to the server
-            if (write(server_fd, buffer, strlen(buffer)) < 0)
+            // Send the name to the server
+            if (write(server_fd, name, strlen(name)) < 0)
             {
                 perror("write");
                 break;
             }
+            name_sent = 1; // Set the flag as the name has been sent
         }
+        else if (strstr(buffer, "Question") != NULL)
+        {
+            // Handle question from the server
+            // Code to prompt user for answer and send it to the server
+        }
+        // Additional conditions for other server messages can be handled here
     }
 }
 

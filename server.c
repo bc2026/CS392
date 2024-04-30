@@ -235,6 +235,8 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
+    printf("Welcome to 392 Trivia!");
+
     // Load the questions from the file
     Entry entries[MAX_ENTRIES];
     int num_entries = read_questions(entries, file);
