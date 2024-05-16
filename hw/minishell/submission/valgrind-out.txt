@@ -1,0 +1,329 @@
+==3993== Memcheck, a memory error detector
+==3993== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3993== Using Valgrind-3.19.0-8d3c8034b8-20220411 and LibVEX; rerun with -h for copyright info
+==3993== Command: ./minishell
+==3993== Parent PID: 10
+==3993== 
+--3993-- 
+--3993-- Valgrind options:
+--3993--    --leak-check=full
+--3993--    --show-leak-kinds=all
+--3993--    --track-origins=yes
+--3993--    --verbose
+--3993--    --log-file=valgrind-out.txt
+--3993-- Contents of /proc/version:
+--3993--   Linux version 5.15.146.1-microsoft-standard-WSL2 (root@65c757a075e2) (gcc (GCC) 11.2.0, GNU ld (GNU Binutils) 2.37) #1 SMP Thu Jan 11 04:09:03 UTC 2024
+--3993-- 
+--3993-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--3993-- Page sizes: currently 4096, max supported 4096
+--3993-- Valgrind library directory: /usr/libexec/valgrind
+--3993-- Reading syms from /mnt/c/Users/bc/392*/hw/minishell/submission/minishell
+--3993-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--3993--   Considering /usr/lib/debug/.build-id/38/e7d4a67acf053c794b3b8094e6900b5163f37d.debug ..
+--3993--   .. build-id is valid
+--3993-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--3993--   Considering /usr/lib/debug/.build-id/82/26c2aa6b808ebd5a6fafb694a7fb3287f33590.debug ..
+--3993--   .. build-id is valid
+--3993--    object doesn't have a dynamic symbol table
+--3993-- Scheduler: using generic scheduler lock implementation.
+--3993-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==3993== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3993-by-bc-on-???
+==3993== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3993-by-bc-on-???
+==3993== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3993-by-bc-on-???
+==3993== 
+==3993== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==3993== don't want to do, unless you know exactly what you're doing,
+==3993== or are doing some strange experiment):
+==3993==   /usr/bin/vgdb --pid=3993 ...command...
+==3993== 
+==3993== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==3993==   /path/to/gdb ./minishell
+==3993== and then give GDB the following command
+==3993==   target remote | /usr/bin/vgdb --pid=3993
+==3993== --pid is optional if only one valgrind process is running
+==3993== 
+--3993-- REDIR: 0x40236e0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bb0e2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--3993-- REDIR: 0x4021ec0 (ld-linux-x86-64.so.2:index) redirected to 0x580bb0fc (vgPlain_amd64_linux_REDIR_FOR_index)
+--3993-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--3993--   Considering /usr/lib/debug/.build-id/ad/f1388be4d8781737b0c83fe111a5a9c6e930aa.debug ..
+--3993--   .. build-id is valid
+--3993-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--3993--   Considering /usr/lib/debug/.build-id/d8/ec66cffcb23a75c3f15940674d6028709121f8.debug ..
+--3993--   .. build-id is valid
+==3993== WARNING: new redirection conflicts with existing -- ignoring it
+--3993--     old: 0x040236e0 (strlen              ) R-> (0000.0) 0x580bb0e2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--3993--     new: 0x040236e0 (strlen              ) R-> (2007.0) 0x048468a0 strlen
+--3993-- REDIR: 0x40220e0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4847780 (strcmp)
+--3993-- REDIR: 0x4021350 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484b1a0 (mempcpy)
+--3993-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--3993--   Considering /usr/lib/debug/.build-id/82/ce4e6e4ef08fa58a3535f7437bd3e592db5ac0.debug ..
+--3993--   .. build-id is valid
+==3993== WARNING: new redirection conflicts with existing -- ignoring it
+--3993--     old: 0x048ef540 (memalign            ) R-> (1011.0) 0x04845bc0 memalign
+--3993--     new: 0x048ef540 (memalign            ) R-> (1017.0) 0x04845b90 aligned_alloc
+==3993== WARNING: new redirection conflicts with existing -- ignoring it
+--3993--     old: 0x048ef540 (memalign            ) R-> (1011.0) 0x04845bc0 memalign
+--3993--     new: 0x048ef540 (memalign            ) R-> (1017.0) 0x04845b60 aligned_alloc
+--3993-- REDIR: 0x48f5490 (libc.so.6:strnlen) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f5520 (libc.so.6:strpbrk) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f3640 (libc.so.6:strcmp) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x4908420 (libc.so.6:wcsnlen) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f2780 (libc.so.6:memset) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x4906d60 (libc.so.6:wcslen) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f1db0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x4906b90 (libc.so.6:wcschr) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f3530 (libc.so.6:index) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f5550 (libc.so.6:rindex) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x4906c20 (libc.so.6:wcscmp) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f29c0 (libc.so.6:stpncpy) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x4907170 (libc.so.6:wmemchr) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f5340 (libc.so.6:strncmp) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f2a30 (libc.so.6:strcasecmp) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f48a0 (libc.so.6:strcspn) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x4906cb0 (libc.so.6:wcscpy) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f34b0 (libc.so.6:strcat) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f5230 (libc.so.6:strncasecmp_l) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f1cc0 (libc.so.6:bcmp) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f26f0 (libc.so.6:memrchr) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f35b0 (libc.so.6:strchrnul) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f4820 (libc.so.6:strcpy) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f2ad0 (libc.so.6:strcasecmp_l) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f5100 (libc.so.6:strlen) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f53e0 (libc.so.6:strncpy) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f2940 (libc.so.6:stpcpy) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f24d0 (libc.so.6:memmove) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+==3993== Preferring higher priority redirection:
+--3993--     old: 0x049a8780 (__memcpy_avx_unalign) R-> (2018.0) 0x04848a60 __memcpy_avx_unaligned_erms
+--3993--     new: 0x049a8780 (__memcpy_avx_unalign) R-> (2018.1) 0x0484a2b0 memmove
+--3993-- REDIR: 0x48f1c40 (libc.so.6:memchr) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f5710 (libc.so.6:strspn) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f25e0 (libc.so.6:mempcpy) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f5190 (libc.so.6:strncasecmp) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x48f2880 (libc.so.6:rawmemchr) redirected to 0x48371b0 (_vgnU_ifunc_wrapper)
+--3993-- REDIR: 0x49ae850 (libc.so.6:__strrchr_avx2) redirected to 0x48462e0 (rindex)
+--3993-- REDIR: 0x49a9180 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x484a1c0 (memset)
+--3993-- REDIR: 0x48ee860 (libc.so.6:malloc) redirected to 0x4840740 (malloc)
+--3993-- REDIR: 0x48ef060 (libc.so.6:realloc) redirected to 0x48457b0 (realloc)
+--3993-- REDIR: 0x49ab420 (libc.so.6:__strchrnul_avx2) redirected to 0x484aca0 (strchrnul)
+--3993-- REDIR: 0x49abf00 (libc.so.6:__strlen_avx2) redirected to 0x4846780 (strlen)
+--3993-- REDIR: 0x49a8730 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x484adb0 (mempcpy)
+--3993-- REDIR: 0x49a7d80 (libc.so.6:__memchr_avx2) redirected to 0x4847800 (memchr)
+--3993-- REDIR: 0x49a8780 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x484a2b0 (memmove)
+--3993-- REDIR: 0x49c8170 (libc.so.6:__strcspn_sse42) redirected to 0x484b570 (strcspn)
+--3993-- REDIR: 0x49cae00 (libc.so.6:__strspn_sse42) redirected to 0x484b670 (strspn)
+--3993-- REDIR: 0x49ab610 (libc.so.6:__strcmp_avx2) redirected to 0x4847680 (strcmp)
+--3993-- REDIR: 0x49ad5d0 (libc.so.6:__strncmp_avx2) redirected to 0x4846ed0 (strncmp)
+--3993-- REDIR: 0x49adc20 (libc.so.6:__strncpy_avx2) redirected to 0x4846a50 (strncpy)
+--3994-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--3994-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--3994-- REDIR: 0x49a9420 (libc.so.6:__stpcpy_avx2) redirected to 0x4849b60 (stpcpy)
+--3994-- REDIR: 0x48eee20 (libc.so.6:free) redirected to 0x4843110 (free)
+==3994== 
+==3994== HEAP SUMMARY:
+==3994==     in use at exit: 61 bytes in 4 blocks
+==3994==   total heap usage: 10 allocs, 6 frees, 18,493 bytes allocated
+==3994== 
+==3994== Searching for pointers to 4 not-freed blocks
+==3994== Checked 107,128 bytes
+==3994== 
+==3994== 2 bytes in 1 blocks are still reachable in loss record 1 of 3
+==3994==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==3994==    by 0x494F127: getcwd (getcwd.c:86)
+==3994==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==3994== 
+==3994== 14 bytes in 2 blocks are definitely lost in loss record 2 of 3
+==3994==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==3994==    by 0x494F127: getcwd (getcwd.c:86)
+==3994==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==3994== 
+==3994== 45 bytes in 1 blocks are definitely lost in loss record 3 of 3
+==3994==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==3994==    by 0x494F127: getcwd (getcwd.c:86)
+==3994==    by 0x109F9C: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==3994== 
+==3994== LEAK SUMMARY:
+==3994==    definitely lost: 59 bytes in 3 blocks
+==3994==    indirectly lost: 0 bytes in 0 blocks
+==3994==      possibly lost: 0 bytes in 0 blocks
+==3994==    still reachable: 2 bytes in 1 blocks
+==3994==         suppressed: 0 bytes in 0 blocks
+==3994== 
+==3994== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+--3993-- REDIR: 0x49a9420 (libc.so.6:__stpcpy_avx2) redirected to 0x4849b60 (stpcpy)
+--3993-- REDIR: 0x48eee20 (libc.so.6:free) redirected to 0x4843110 (free)
+--3995-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--3995-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--3996-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--3996-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--3997-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--3997-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--3998-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--3998-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--3999-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--3999-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--4000-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4000-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--4001-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4001-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--4002-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4002-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--4003-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4003-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+--4004-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4004-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+==4004== 
+==4004== HEAP SUMMARY:
+==4004==     in use at exit: 89 bytes in 11 blocks
+==4004==   total heap usage: 24 allocs, 13 frees, 47,193 bytes allocated
+==4004== 
+==4004== Searching for pointers to 11 not-freed blocks
+==4004== Checked 107,168 bytes
+==4004== 
+==4004== 9 bytes in 1 blocks are still reachable in loss record 1 of 3
+==4004==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4004==    by 0x494F127: getcwd (getcwd.c:86)
+==4004==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4004== 
+==4004== 35 bytes in 9 blocks are definitely lost in loss record 2 of 3
+==4004==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4004==    by 0x494F127: getcwd (getcwd.c:86)
+==4004==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4004== 
+==4004== 45 bytes in 1 blocks are definitely lost in loss record 3 of 3
+==4004==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4004==    by 0x494F127: getcwd (getcwd.c:86)
+==4004==    by 0x109F9C: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4004== 
+==4004== LEAK SUMMARY:
+==4004==    definitely lost: 80 bytes in 10 blocks
+==4004==    indirectly lost: 0 bytes in 0 blocks
+==4004==      possibly lost: 0 bytes in 0 blocks
+==4004==    still reachable: 9 bytes in 1 blocks
+==4004==         suppressed: 0 bytes in 0 blocks
+==4004== 
+==4004== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+--4005-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4005-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+==4005== 
+==4005== HEAP SUMMARY:
+==4005==     in use at exit: 89 bytes in 11 blocks
+==4005==   total heap usage: 24 allocs, 13 frees, 47,193 bytes allocated
+==4005== 
+==4005== Searching for pointers to 11 not-freed blocks
+==4005== Checked 107,168 bytes
+==4005== 
+==4005== 9 bytes in 1 blocks are still reachable in loss record 1 of 3
+==4005==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4005==    by 0x494F127: getcwd (getcwd.c:86)
+==4005==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4005== 
+==4005== 35 bytes in 9 blocks are definitely lost in loss record 2 of 3
+==4005==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4005==    by 0x494F127: getcwd (getcwd.c:86)
+==4005==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4005== 
+==4005== 45 bytes in 1 blocks are definitely lost in loss record 3 of 3
+==4005==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4005==    by 0x494F127: getcwd (getcwd.c:86)
+==4005==    by 0x109F9C: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4005== 
+==4005== LEAK SUMMARY:
+==4005==    definitely lost: 80 bytes in 10 blocks
+==4005==    indirectly lost: 0 bytes in 0 blocks
+==4005==      possibly lost: 0 bytes in 0 blocks
+==4005==    still reachable: 9 bytes in 1 blocks
+==4005==         suppressed: 0 bytes in 0 blocks
+==4005== 
+==4005== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+--4006-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4006-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+==4006== 
+==4006== HEAP SUMMARY:
+==4006==     in use at exit: 89 bytes in 11 blocks
+==4006==   total heap usage: 24 allocs, 13 frees, 47,193 bytes allocated
+==4006== 
+==4006== Searching for pointers to 11 not-freed blocks
+==4006== Checked 107,168 bytes
+==4006== 
+==4006== 9 bytes in 1 blocks are still reachable in loss record 1 of 3
+==4006==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4006==    by 0x494F127: getcwd (getcwd.c:86)
+==4006==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4006== 
+==4006== 35 bytes in 9 blocks are definitely lost in loss record 2 of 3
+==4006==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4006==    by 0x494F127: getcwd (getcwd.c:86)
+==4006==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4006== 
+==4006== 45 bytes in 1 blocks are definitely lost in loss record 3 of 3
+==4006==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4006==    by 0x494F127: getcwd (getcwd.c:86)
+==4006==    by 0x109F9C: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4006== 
+==4006== LEAK SUMMARY:
+==4006==    definitely lost: 80 bytes in 10 blocks
+==4006==    indirectly lost: 0 bytes in 0 blocks
+==4006==      possibly lost: 0 bytes in 0 blocks
+==4006==    still reachable: 9 bytes in 1 blocks
+==4006==         suppressed: 0 bytes in 0 blocks
+==4006== 
+==4006== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+--3993-- REDIR: 0x49ab1e0 (libc.so.6:__strchr_avx2) redirected to 0x4846460 (index)
+--4007-- REDIR: 0x49ae580 (libc.so.6:__strnlen_avx2) redirected to 0x4846720 (strnlen)
+==4007== 
+==4007== HEAP SUMMARY:
+==4007==     in use at exit: 91 bytes in 12 blocks
+==4007==   total heap usage: 111 allocs, 99 frees, 212,196 bytes allocated
+==4007== 
+==4007== Searching for pointers to 12 not-freed blocks
+==4007== Checked 107,160 bytes
+==4007== 
+==4007== 2 bytes in 1 blocks are still reachable in loss record 1 of 3
+==4007==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4007==    by 0x494F127: getcwd (getcwd.c:86)
+==4007==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4007== 
+==4007== 44 bytes in 10 blocks are definitely lost in loss record 2 of 3
+==4007==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4007==    by 0x494F127: getcwd (getcwd.c:86)
+==4007==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4007== 
+==4007== 45 bytes in 1 blocks are definitely lost in loss record 3 of 3
+==4007==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==4007==    by 0x494F127: getcwd (getcwd.c:86)
+==4007==    by 0x109F9C: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==4007== 
+==4007== LEAK SUMMARY:
+==4007==    definitely lost: 89 bytes in 11 blocks
+==4007==    indirectly lost: 0 bytes in 0 blocks
+==4007==      possibly lost: 0 bytes in 0 blocks
+==4007==    still reachable: 2 bytes in 1 blocks
+==4007==         suppressed: 0 bytes in 0 blocks
+==4007== 
+==4007== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==3993== 
+==3993== HEAP SUMMARY:
+==3993==     in use at exit: 89 bytes in 11 blocks
+==3993==   total heap usage: 111 allocs, 100 frees, 212,196 bytes allocated
+==3993== 
+==3993== Searching for pointers to 11 not-freed blocks
+==3993== Checked 107,160 bytes
+==3993== 
+==3993== 44 bytes in 10 blocks are definitely lost in loss record 1 of 2
+==3993==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==3993==    by 0x494F127: getcwd (getcwd.c:86)
+==3993==    by 0x10A1F1: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==3993== 
+==3993== 45 bytes in 1 blocks are definitely lost in loss record 2 of 2
+==3993==    at 0x484582F: realloc (vg_replace_malloc.c:1437)
+==3993==    by 0x494F127: getcwd (getcwd.c:86)
+==3993==    by 0x109F9C: main (in /mnt/c/Users/bc/392*/hw/minishell/submission/minishell)
+==3993== 
+==3993== LEAK SUMMARY:
+==3993==    definitely lost: 89 bytes in 11 blocks
+==3993==    indirectly lost: 0 bytes in 0 blocks
+==3993==      possibly lost: 0 bytes in 0 blocks
+==3993==    still reachable: 0 bytes in 0 blocks
+==3993==         suppressed: 0 bytes in 0 blocks
+==3993== 
+==3993== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)

@@ -8,29 +8,33 @@
 #include <unistd.h>
 #include <string.h>
 
+void invalid_pstring(char *pstring);
+void task2(char *directory, char *pstring);
+void task2_helper(char *basepath, char *pstring, size_t path_len);
 
-void invalid_pstring(char* pstring);
-void task2(char* directory, char* pstring);
-void find_and_print_files_with_permissions(char* basepath, char* pstring, size_t path_len);
-
-void task2(char* directory, char* pstring) {
+void task2(char *directory, char *pstring)
+{
     size_t path_len = strlen(directory);
-    find_and_print_files_with_permissions(directory, pstring, path_len);
+    task2_helper(directory, pstring, path_len);
 }
 
-void find_and_print_files_with_permissions(char* basepath, char* pstring, size_t path_len) {
+void task2_helper(char *basepath, char *pstring, size_t path_len)
+{
     char path[PATH_MAX];
     struct dirent *dp;
     struct stat statbuf;
 
     DIR *dir = opendir(basepath);
-    if (!dir) {
+    if (!dir)
+    {
         return; // Could not open directory
     }
 
-    while ((dp = readdir(dir)) != NULL) {
+    while ((dp = readdir(dir)) != NULL)
+    {
         // Skip '.' and '..'
-        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0) {
+        if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
+        {
             continue;
         }
 
@@ -38,8 +42,10 @@ void find_and_print_files_with_permissions(char* basepath, char* pstring, size_t
         char *formatString = (basepath[strlen(basepath) - 1] == '/') ? "%s%s" : "%s/%s";
         snprintf(path, PATH_MAX, formatString, basepath, dp->d_name);
 
-        if (lstat(path, &statbuf) == 0) {
-            if (S_ISREG(statbuf.st_mode)) {
+        if (lstat(path, &statbuf) == 0)
+        {
+            if (S_ISREG(statbuf.st_mode))
+            {
                 char modeval[10];
                 snprintf(modeval, sizeof(modeval), "%c%c%c%c%c%c%c%c%c",
                          (statbuf.st_mode & S_IRUSR) ? 'r' : '-',
@@ -51,11 +57,14 @@ void find_and_print_files_with_permissions(char* basepath, char* pstring, size_t
                          (statbuf.st_mode & S_IROTH) ? 'r' : '-',
                          (statbuf.st_mode & S_IWOTH) ? 'w' : '-',
                          (statbuf.st_mode & S_IXOTH) ? 'x' : '-');
-                if (strncmp(pstring, modeval, 9) == 0) {
+                if (strncmp(pstring, modeval, 9) == 0)
+                {
                     printf("%s\n", path);
                 }
-            } else if (S_ISDIR(statbuf.st_mode)) {
-                find_and_print_files_with_permissions(path, pstring, path_len + strlen(dp->d_name) + 1);
+            }
+            else if (S_ISDIR(statbuf.st_mode))
+            {
+                task2_helper(path, pstring, path_len + strlen(dp->d_name) + 1);
             }
         }
     }
@@ -63,13 +72,16 @@ void find_and_print_files_with_permissions(char* basepath, char* pstring, size_t
     closedir(dir);
 }
 
-void invalid_pstring(char* pstring) {
+void invalid_pstring(char *pstring)
+{
     fprintf(stderr, "Error: Permissions string '%s' is invalid.\n", pstring);
     exit(EXIT_FAILURE);
 }
 
-int main(int argc, char const *argv[]) {  
-    if (argc != 3) {
+int main(int argc, char const *argv[])
+{
+    if (argc != 3)
+    {
         fprintf(stderr, "Usage: %s <directory> <permissions>\n", argv[0]);
         exit(EXIT_FAILURE);
     }
@@ -78,23 +90,29 @@ int main(int argc, char const *argv[]) {
     char const *directory = argv[1];
 
     int pstring_length = strlen(pstring);
-    
-    if(pstring_length != 9) {
+
+    if (pstring_length != 9)
+    {
         invalid_pstring(pstring);
     }
 
     int err = 0;
-    for (int i = 0; i < pstring_length; i++) {
+    for (int i = 0; i < pstring_length; i++)
+    {
         char c = pstring[i];
-        err = (i % 3 == 0) ? (c != 'r' && c != '-') :
-              (i % 3 == 1) ? (c != 'w' && c != '-') :
-              (c != 'x' && c != '-') ? 1 : err;
-        if (err) break;
+        err = (i % 3 == 0) ? (c != 'r' && c != '-') : (i % 3 == 1)         ? (c != 'w' && c != '-')
+                                                  : (c != 'x' && c != '-') ? 1
+                                                                           : err;
+        if (err)
+            break;
     }
 
-    if (err) {
+    if (err)
+    {
         invalid_pstring(pstring);
-    } else {
+    }
+    else
+    {
         task2(directory, pstring);
     }
 
